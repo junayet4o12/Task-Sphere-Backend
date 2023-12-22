@@ -23,6 +23,7 @@ async function run() {
         const taskSphere = client.db('taskSphere')
         const usersCollection = taskSphere.collection('users')
         const taskCollection = taskSphere.collection('task')
+        const clientsCollection = taskSphere.collection('clients')
 
         // usersCollection start
         app.post('/users', async (req, res) => {
@@ -117,7 +118,12 @@ async function run() {
             res.send(result)
         })
         // taskCollection end
-
+        // clientsCollection start
+        app.get('/clients', async(req, res)=> {
+          const result = await clientsCollection.find().toArray()
+          res.send(result)
+        }) 
+        // clientsCollection end
 
     }
     finally {
