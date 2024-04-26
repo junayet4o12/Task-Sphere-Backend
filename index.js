@@ -24,6 +24,9 @@ const getUsers = require('./routes/Users/getUsers/getUsers')
 const getSingleUserTask = require('./routes/Tasks/getSingleUserTask/getSingleUserTask')
 const addTasks = require('./routes/Tasks/addTask/addTask')
 const allTasks = require('./routes/Tasks/allTasks/allTasks')
+const makeTaskToDo = require('./routes/Tasks/makeTaskToDo/makeTaskToDo')
+const makeTaskOngoing = require('./routes/Tasks/makeTaskOngoing/makeTaskOngoing')
+const makeTaskCompleted = require('./routes/Tasks/makeTaskCompleted/makeTaskCompleted')
 async function run() {
     try {
         const taskSphere = client.db('taskSphere')
@@ -38,41 +41,11 @@ async function run() {
         app.use(allTasks)
         app.use(addTasks)
         app.use(getSingleUserTask)
-        app.put('/tasksTodo/:id', async (req, res) => {
-            const id = req?.params?.id;
-            const query = { _id: new ObjectId(id) }
-            const updatedData = {
-                $set: {
-                    type: 'todo'
-                }
-            }
-            console.log(query);
-            const result = await taskCollection.updateOne(query, updatedData)
-            res.send(result)
-        })
-        app.put('/tasksOngoing/:id', async (req, res) => {
-            const id = req?.params?.id;
-            const query = { _id: new ObjectId(id) }
-            const updatedData = {
-                $set: {
-                    type: 'ongoing'
-                }
-            }
-            console.log(query);
-            const result = await taskCollection.updateOne(query, updatedData)
-            res.send(result)
-        })
-        app.put('/tasksCompleted/:id', async (req, res) => {
-            const id = req?.params?.id;
-            const query = { _id: new ObjectId(id) }
-            const updatedData = {
-                $set: {
-                    type: 'completed'
-                }
-            }
-            const result = await taskCollection.updateOne(query, updatedData)
-            res.send(result)
-        })
+        app.use(makeTaskToDo)
+        app.use(makeTaskOngoing)
+        app.use(makeTaskCompleted)
+        
+        
         app.put('/singletaskupdate/:id', async (req, res) => {
             const data = req?.body
             const id = req?.params?.id;
