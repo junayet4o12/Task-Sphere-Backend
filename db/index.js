@@ -1,6 +1,6 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.fbi4wg4.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `${process.env.DB_URI}`;
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -14,4 +14,4 @@ const usersCollection = taskSphere.collection('users')
 const taskCollection = taskSphere.collection('task')
 const clientsCollection = taskSphere.collection('clients')
 
-module.exports = {taskSphere, usersCollection, taskCollection, clientsCollection};
+module.exports = { taskSphere, usersCollection, taskCollection, clientsCollection };

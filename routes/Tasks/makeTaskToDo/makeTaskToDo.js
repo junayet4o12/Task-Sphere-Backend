@@ -10,7 +10,6 @@ router.put('/tasksTodo/:id', async (req, res) => {
             type: 'todo'
         }
     }
-    console.log(query);
     const result = await taskCollection.updateOne(query, updatedData)
     res.send(result)
 })
