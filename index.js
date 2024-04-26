@@ -21,18 +21,15 @@ const allClients = require('./routes/Clients/AllClients/AllClients')
 const addUsers = require('./routes/Users/addUsers/addUsers')
 const getSingleUsers = require('./routes/Users/getSingleUser/getSingleUser')
 const getUsers = require('./routes/Users/getUsers/getUsers')
+const getSingleUserTask = require('./routes/Tasks/getSingleUserTask/getSingleUserTask')
 async function run() {
     try {
         const taskSphere = client.db('taskSphere')
-        const usersCollection = taskSphere.collection('users')
         const taskCollection = taskSphere.collection('task')
         // usersCollection start
         app.use(addUsers)
         app.use(getSingleUsers)
         app.use(getUsers)
-
-
-
         // usersCollection end 
 
         // taskCollection start
@@ -45,12 +42,7 @@ async function run() {
             const result = await taskCollection.insertOne(task)
             res.send(result)
         })
-        app.get('/tasks/:email', async (req, res) => {
-            const email = req?.params?.email;
-            const query = { creator: email }
-            const result = await taskCollection.find(query).toArray()
-            res.send(result)
-        })
+        app.use(getSingleUserTask)
         app.put('/tasksTodo/:id', async (req, res) => {
             const id = req?.params?.id;
             const query = { _id: new ObjectId(id) }
