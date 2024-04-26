@@ -10,7 +10,6 @@ router.put('/tasksOngoing/:id', async (req, res) => {
             type: 'ongoing'
         }
     }
-    console.log(query);
     const result = await taskCollection.updateOne(query, updatedData)
     res.send(result)
 })
