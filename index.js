@@ -17,14 +17,12 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     }
 });
-
+const allClients = require('./routes/Clients/AllClients/AllClients')
 async function run() {
     try {
         const taskSphere = client.db('taskSphere')
         const usersCollection = taskSphere.collection('users')
         const taskCollection = taskSphere.collection('task')
-        const clientsCollection = taskSphere.collection('clients')
-
         // usersCollection start
         app.post('/users', async (req, res) => {
             const user = req.body;
@@ -64,6 +62,18 @@ async function run() {
             const email = req?.params?.email;
             const query = { creator: email }
             const result = await taskCollection.find(query).toArray()
+            res.send(result)
+        })
+        app.put('/tasksTodo/:id', async (req, res) => {
+            const id = req?.params?.id;
+            const query = { _id: new ObjectId(id) }
+            const updatedData = {
+                $set: {
+                    type: 'todo'
+                }
+            }
+            console.log(query);
+            const result = await taskCollection.updateOne(query, updatedData)
             res.send(result)
         })
         app.put('/tasksOngoing/:id', async (req, res) => {
@@ -119,10 +129,7 @@ async function run() {
         })
         // taskCollection end
         // clientsCollection start
-        app.get('/clients', async(req, res)=> {
-          const result = await clientsCollection.find().toArray()
-          res.send(result)
-        }) 
+        app.use(allClients)
         // clientsCollection end
 
     }
@@ -134,3 +141,5 @@ run().catch(console.dir);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
