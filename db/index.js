@@ -14,7 +14,4 @@ const usersCollection = taskSphere.collection('users')
 const taskCollection = taskSphere.collection('task')
 const clientsCollection = taskSphere.collection('clients')
 
-module.exports = taskSphere;
-module.exports = usersCollection;
-module.exports = taskCollection;
-module.exports = clientsCollection;
+module.exports = {taskSphere, usersCollection, taskCollection, clientsCollection};

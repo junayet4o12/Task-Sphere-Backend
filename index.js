@@ -18,34 +18,21 @@ const client = new MongoClient(uri, {
     }
 });
 const allClients = require('./routes/Clients/AllClients/AllClients')
+const addUsers = require('./routes/Users/addUsers/addUsers')
+const getSingleUsers = require('./routes/Users/getSingleUser/getSingleUser')
+const getUsers = require('./routes/Users/getUsers/getUsers')
 async function run() {
     try {
         const taskSphere = client.db('taskSphere')
         const usersCollection = taskSphere.collection('users')
         const taskCollection = taskSphere.collection('task')
         // usersCollection start
-        app.post('/users', async (req, res) => {
-            const user = req.body;
-            const query = { email: user.email }
-            const axistingUser = await usersCollection.findOne(query);
-            if (axistingUser) {
-                return res.send({ message: ' use already exists' })
-            }
-            const result = await usersCollection.insertOne(user);
-            res.send(result)
-        })
+        app.use(addUsers)
+        app.use(getSingleUsers)
+        app.use(getUsers)
 
 
-        app.get('/users', async (req, res) => {
-            const result = await usersCollection.find().toArray();
-            res.send(result)
-        })
-        app.get('/users/:email', async (req, res) => {
-            const email = req?.params?.email
-            const query = { email: email }
-            const result = await usersCollection.findOne(query);
-            res.send(result)
-        })
+
         // usersCollection end 
 
         // taskCollection start

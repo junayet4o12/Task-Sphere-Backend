@@ -1,5 +1,5 @@
 var express = require('express');
-const clientsCollection = require('../../../db');
+const {clientsCollection} = require('../../../db');
 var router = express.Router();
 
 router.get('/clients', async (req, res) => {
