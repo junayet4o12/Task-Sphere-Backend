@@ -27,6 +27,7 @@ const allTasks = require('./routes/Tasks/allTasks/allTasks')
 const makeTaskToDo = require('./routes/Tasks/makeTaskToDo/makeTaskToDo')
 const makeTaskOngoing = require('./routes/Tasks/makeTaskOngoing/makeTaskOngoing')
 const makeTaskCompleted = require('./routes/Tasks/makeTaskCompleted/makeTaskCompleted')
+const singleTaskUpdate = require('./routes/Tasks/singleTaskUpdate/singleTaskUpdate')
 async function run() {
     try {
         const taskSphere = client.db('taskSphere')
@@ -44,24 +45,10 @@ async function run() {
         app.use(makeTaskToDo)
         app.use(makeTaskOngoing)
         app.use(makeTaskCompleted)
+        app.use(singleTaskUpdate)
         
         
-        app.put('/singletaskupdate/:id', async (req, res) => {
-            const data = req?.body
-            const id = req?.params?.id;
-            const query = { _id: new ObjectId(id) }
-            const updatedtask = {
-                $set: {
-                    title: data?.title,
-                    deadline: data?.deadline,
-                    description: data?.description,
-                    priority: data?.priority
-
-                }
-            }
-            const result = await taskCollection.updateOne(query, updatedtask)
-            res.send(result)
-        })
+        
         app.delete('/tasks/:id', async (req, res) => {
             const id = req?.params?.id;
             const query = { _id: new ObjectId(id) }
